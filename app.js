@@ -34,7 +34,10 @@ const userPlay = () => {
     case "SCISSORS":
       return "Scissors";
   }
+
+  return userSelection;
 } 
+
 
 function playRound(playerSelection,computerSelection) {
     if (computerSelection === playerSelection) {
