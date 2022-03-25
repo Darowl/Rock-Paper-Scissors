@@ -1,79 +1,47 @@
-const computerPlay = () => {
-    let randomNumber = Math.floor(Math.random() * 3 + 1);
+// make a computerPLay function that will randomly return paper, rock, scissors
+
+// Write a function that plays a single round of Rock Paper Scissors, with two parameters - the playerSelection and computerSelection - and then return a string that declares the winner of the round like so: "You Lose! Paper beats Rock"
+
+// Write a NEW function called game(). Call the playRound function inside of this one to play a 5 round game that keeps score and reports a winner or loser at the end.
+
+// Play five rounds
+
+const resultDisplay = document.querySelector('#result');
+const choicesDisplay = document.querySelector('#choices');
+
+
+choices = ['Rock', 'Paper', 'Scissors'];
+
+const computerPlay = (e) => {
+    // playRound(e.target.innerHTML, choices[Math.floor(Math.random() * choices.length)])
+    console.log(e)
+}
+
+choices.forEach(choice => {
+    const button = document.createElement('button')
+    button.innerHTML = choice
+    button.addEventListener('click', computerPlay)
+    choicesDisplay.appendChild(button)
     
-    if (randomNumber === 1){
-      return 'Rock'
-    }
-    if (randomNumber === 2){
-      return 'Paper'
-    }
-    if (randomNumber === 3) {
-      return 'Scissors'
-    }
-}
+  })
 
-
-
-const userPlay = () => {
-  let userSelection = prompt('What is your choice');
-  switch(userSelection) {
-    case "rock":
-      return "Rock";
-      break;
-    case "ROCK":
-      return "Fock";
-      break;
-    case "paper":
-      return "Paper";
-      break;
-    case "PAPER":
-      return "Paper";
-    case "scissors":
-      return "Scissors";
-      break;
-    case "SCISSORS":
-      return "Scissors";
+const playRound = (playerSelection, computerSelection) => {
+    switch (playerSelection + computerSelection) {
+        case 'ScissorsPaper':
+        case 'RockScissors': 
+        case 'PaperRock':
+            resultDisplay.innerHTML = `You Win! ${playerSelection} beats ${computerSelection}`;
+            break;
+        case 'PaperScissors':
+        case 'ScissorsRock': 
+        case 'RockPaper':
+            resultDisplay.innerHTML = `You Lose! ${computerSelection} beats ${playerSelection}`;
+            break;
+        case 'ScissorsScissors':
+        case 'RockRock':
+        case 'PaperPaper':
+            resultDisplay.innerHTML = "ITS A DRAW!";
+            break;
+    }
   }
-} 
 
-function playRound(playerSelection,computerSelection) {
-    if (computerSelection === playerSelection) {
-       return "It's a draw";
-    } 
-    else if  (computerSelection === 'Rock' && playerSelection === 'Paper') {
-      return 'You Win! Paper beats Scissors';
-    } 
-    else if (computerSelection === 'Rock' && playerSelection === 'Scissors') {
-      return 'You Lose! Rock beats Scissors';
-    } 
-    else if (computerSelection === 'Paper' && playerSelection === 'Scissors') {
-      return 'You Win! Scissors beats Paper';
-    } 
-    else if (computerSelection === 'Paper' && playerSelection === 'Rock') {
-      return 'You Lose! Paper beats Rock';
-    } 
-    else if (computerSelection === 'Scissors' && playerSelection === 'Rock') {
-      return 'You Win! Rock beats Scissors'
-    }
-    else if (computerSelection === 'Scissors' && playerSelection === 'Paper') {
-      return 'You Lose! Scissors beats Paper'
-    } else if (playerSelection === undefined) {
-      return 'Please write a valid option '
-    }
-};
-
-computerSelection = computerPlay();
-playerSelection = userPlay();
-
-function game(n) {
-  for(let i = 1; i < n; i++) { 
-    userPlay();
-    console.log(playRound(playerSelection, computerSelection));
-  }
-}
-
-
-game(2);
-
-console.log('The computer chosed ' + computerSelection)
-console.log('You chosed ' + playerSelection)
