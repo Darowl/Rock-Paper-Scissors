@@ -1,29 +1,50 @@
-// make a computerPLay function that will randomly return paper, rock, scissors
-
-// Write a function that plays a single round of Rock Paper Scissors, with two parameters - the playerSelection and computerSelection - and then return a string that declares the winner of the round like so: "You Lose! Paper beats Rock"
-
-// Write a NEW function called game(). Call the playRound function inside of this one to play a 5 round game that keeps score and reports a winner or loser at the end.
-
-// Play five rounds
-
 const resultDisplay = document.querySelector('#result');
 const choicesDisplay = document.querySelector('#choices');
+const computerScoreSpan = document.querySelector('[data-computer-score]')
+const yourScoreSpan = document.querySelector('[data-your-score]')
+const message = document.querySelector('#game-over')
+let choices = ['Rock', 'Paper' ,'Scissors']
 
+const game = (input) => {
+    playRound(input, choices[Math.floor(Math.random() * choices.length)]);
 
-choices = ['Rock', 'Paper', 'Scissors'];
+    if(yourScoreSpan.innerHTML === "5"){
+        gameOver('Winn', yourScoreSpan, computerScoreSpan)
 
-const computerPlay = (e) => {
-    // playRound(e.target.innerHTML, choices[Math.floor(Math.random() * choices.length)])
-    console.log(e)
+    } else if (computerScoreSpan.innerHTML === "5") {
+        gameOver('Loose', yourScoreSpan, computerScoreSpan)
+    }
 }
 
-choices.forEach(choice => {
-    const button = document.createElement('button')
-    button.innerHTML = choice
-    button.addEventListener('click', computerPlay)
-    choicesDisplay.appendChild(button)
+const gameOver = (winner, resetScore1, resetScore2) => {
+    const winnerText = document.getElementById('message-text');
+    winnerText.innerHTML = `You <span>${winner}</span> This Round`;
+
+    const button = document.getElementById('message-btn');
+    button.innerText = 'Play Another Round';
+
+    button.addEventListener('click', () => {
+        resetScore1.innerText = '0';
+        resetScore2.innerText = '0';
+        choicesDisplay.classList.remove('remove')
+        message.classList.add('remove')
+
+    })
     
-  })
+    message.classList.remove('remove')
+    choicesDisplay.classList.add('remove')
+    resultDisplay.innerHTML = ' ';
+
+    
+}
+
+const incrementScore = (scoreSpan) => { 
+    if (scoreSpan.innerText < 5) {
+        scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1;
+    } else {
+        return scoreSpan.innerText;
+    }
+}
 
 const playRound = (playerSelection, computerSelection) => {
     switch (playerSelection + computerSelection) {
@@ -31,11 +52,13 @@ const playRound = (playerSelection, computerSelection) => {
         case 'RockScissors': 
         case 'PaperRock':
             resultDisplay.innerHTML = `You Win! ${playerSelection} beats ${computerSelection}`;
+            incrementScore(yourScoreSpan)
             break;
         case 'PaperScissors':
         case 'ScissorsRock': 
         case 'RockPaper':
             resultDisplay.innerHTML = `You Lose! ${computerSelection} beats ${playerSelection}`;
+            incrementScore(computerScoreSpan)
             break;
         case 'ScissorsScissors':
         case 'RockRock':
