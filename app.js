@@ -1,82 +1,70 @@
-const computerPlay = () => {
-    let randomNumber = Math.floor(Math.random() * 3 + 1);
+const resultDisplay = document.querySelector('#result');
+const choicesDisplay = document.querySelector('#choices');
+const computerScoreSpan = document.querySelector('[data-computer-score]')
+const yourScoreSpan = document.querySelector('[data-your-score]')
+const message = document.querySelector('#game-over')
+let choices = ['Rock', 'Paper' ,'Scissors']
+
+const game = (input) => {
+    playRound(input, choices[Math.floor(Math.random() * choices.length)]);
+
+    if(yourScoreSpan.innerHTML === "5"){
+        gameOver('Winn', yourScoreSpan, computerScoreSpan)
+
+    } else if (computerScoreSpan.innerHTML === "5") {
+        gameOver('Loose', yourScoreSpan, computerScoreSpan)
+    }
+}
+
+const gameOver = (winner, resetScore1, resetScore2) => {
+    const winnerText = document.getElementById('message-text');
+    winnerText.innerHTML = `You <span>${winner}</span> This Round`;
+
+    const button = document.getElementById('message-btn');
+    button.innerText = 'Play Another Round';
+
+    button.addEventListener('click', () => {
+        resetScore1.innerText = '0';
+        resetScore2.innerText = '0';
+        choicesDisplay.classList.remove('remove')
+        message.classList.add('remove')
+
+    })
     
-    if (randomNumber === 1){
-      return 'Rock'
-    }
-    if (randomNumber === 2){
-      return 'Paper'
-    }
-    if (randomNumber === 3) {
-      return 'Scissors'
+    message.classList.remove('remove')
+    choicesDisplay.classList.add('remove')
+    resultDisplay.innerHTML = ' ';
+
+    
+}
+
+const incrementScore = (scoreSpan) => { 
+    if (scoreSpan.innerText < 5) {
+        scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1;
+    } else {
+        return scoreSpan.innerText;
     }
 }
 
-
-
-const userPlay = () => {
-  let userSelection = prompt('What is your choice');
-  switch(userSelection) {
-    case "rock":
-      return "Rock";
-      break;
-    case "ROCK":
-      return "Fock";
-      break;
-    case "paper":
-      return "Paper";
-      break;
-    case "PAPER":
-      return "Paper";
-    case "scissors":
-      return "Scissors";
-      break;
-    case "SCISSORS":
-      return "Scissors";
+const playRound = (playerSelection, computerSelection) => {
+    switch (playerSelection + computerSelection) {
+        case 'ScissorsPaper':
+        case 'RockScissors': 
+        case 'PaperRock':
+            resultDisplay.innerHTML = `You Win! ${playerSelection} beats ${computerSelection}`;
+            incrementScore(yourScoreSpan)
+            break;
+        case 'PaperScissors':
+        case 'ScissorsRock': 
+        case 'RockPaper':
+            resultDisplay.innerHTML = `You Lose! ${computerSelection} beats ${playerSelection}`;
+            incrementScore(computerScoreSpan)
+            break;
+        case 'ScissorsScissors':
+        case 'RockRock':
+        case 'PaperPaper':
+            resultDisplay.innerHTML = "ITS A DRAW!";
+            break;
+    }
   }
 
-  return userSelection;
-} 
-
-
-function playRound(playerSelection,computerSelection) {
-    if (computerSelection === playerSelection) {
-       return "It's a draw";
-    } 
-    else if  (computerSelection === 'Rock' && playerSelection === 'Paper') {
-      return 'You Win! Paper beats Scissors';
-    } 
-    else if (computerSelection === 'Rock' && playerSelection === 'Scissors') {
-      return 'You Lose! Rock beats Scissors';
-    } 
-    else if (computerSelection === 'Paper' && playerSelection === 'Scissors') {
-      return 'You Win! Scissors beats Paper';
-    } 
-    else if (computerSelection === 'Paper' && playerSelection === 'Rock') {
-      return 'You Lose! Paper beats Rock';
-    } 
-    else if (computerSelection === 'Scissors' && playerSelection === 'Rock') {
-      return 'You Win! Rock beats Scissors'
-    }
-    else if (computerSelection === 'Scissors' && playerSelection === 'Paper') {
-      return 'You Lose! Scissors beats Paper'
-    } else if (playerSelection === undefined) {
-      return 'Please write a valid option '
-    }
-};
-
-computerSelection = computerPlay();
-playerSelection = userPlay();
-
-function game(n) {
-  for(let i = 1; i < n; i++) { 
-    userPlay();
-    console.log(playRound(playerSelection, computerSelection));
-  }
-}
-
-
-game(2);
-
-console.log('The computer chosed ' + computerSelection)
-console.log('You chosed ' + playerSelection)

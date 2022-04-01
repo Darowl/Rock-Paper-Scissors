@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+:root {
+    --background-color: #232735;
+    --title-color: rgb(255, 255, 255);
+    --main-color: rgb(78, 78, 78);
+    --text-color: #fff;
+    --font:'Josefin Sans', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--title-color);
+    font-family: var(--font);
+}
+
+header {
+    display: flex;
+    border: #fff 5px solid;
+    border-radius: 10px;
+    margin: 3vw;
+    padding: 0 5vw;
+    justify-content: center;
+    
+}
+
+.game-container {
+    border-radius: 40px;
+    border: #fff 10px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3em;
+    padding: 1em;
+}
+
+.game-scoreboard {
+    display: flex;
+    column-gap: 5vw;
+    color: black;
+    font-size: 4vh;
+    
+}
+
+.game-scoreboard p{
+    background-color: #fff;
+    padding: .5em;
+}
+
+
+.scoreboard-text {
+    margin: 0;
+}
+
+.game-choices {
+    margin: 2em 0;
+}
+
+.btn {
+    border: #000 5px solid;
+    border-radius: 50%;
+    padding: 4vh;
+    margin: 0 2em;
+    cursor: pointer;
+}
+
+.btn i {
+    font-size: 3.5em;
+}
+
+.game-message {
+    text-align: center;
+    font-weight: 400;
+    padding: 1em;
+    background-color: #500000;
+    margin: 2em 0;
+    border: #fff 7px solid;
+    border-radius: 15px;
+}
+
+.game-message button{
+    border: none;
+    background: rgb(255, 255, 255);
+    border-radius: 80px;
+    padding: 1em;
+    font-size: 3vh;
+    cursor: pointer;
+}
+
+.remove {
+    position: absolute;
+    top: -1000px;
+}
