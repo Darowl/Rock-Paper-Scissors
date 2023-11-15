@@ -1,70 +1,96 @@
-const resultDisplay = document.querySelector('#result');
-const choicesDisplay = document.querySelector('#choices');
-const computerScoreSpan = document.querySelector('[data-computer-score]')
-const yourScoreSpan = document.querySelector('[data-your-score]')
-const message = document.querySelector('#game-over')
-let choices = ['Rock', 'Paper' ,'Scissors']
+const playButton = document.getElementById('play-button');
+const sections = document.querySelectorAll('section');
+const choicesButton = document.querySelectorAll('.choices-btn');
+const computerChoiceDisplay = document.querySelector('.bot-choice-container');
+const playerChoiceDisplay = document.querySelector('.player-choice-container');
+const scorePlayer = document.getElementById('player-score');
+const scoreComputer = document.getElementById('bot-score')
+const winnerText = document.getElementById('remark');
+const restartButton = document.querySelector('#restart')
 
-const game = (input) => {
-    playRound(input, choices[Math.floor(Math.random() * choices.length)]);
+let points = 2;
+let choices = ['rock', 'paper' ,'scissors']
 
-    if(yourScoreSpan.innerHTML === "5"){
-        gameOver('Winn', yourScoreSpan, computerScoreSpan)
-
-    } else if (computerScoreSpan.innerHTML === "5") {
-        gameOver('Loose', yourScoreSpan, computerScoreSpan)
-    }
-}
-
-const gameOver = (winner, resetScore1, resetScore2) => {
-    const winnerText = document.getElementById('message-text');
-    winnerText.innerHTML = `You <span>${winner}</span> This Round`;
-
-    const button = document.getElementById('message-btn');
-    button.innerText = 'Play Another Round';
-
-    button.addEventListener('click', () => {
-        resetScore1.innerText = '0';
-        resetScore2.innerText = '0';
-        choicesDisplay.classList.remove('remove')
-        message.classList.add('remove')
-
-    })
-    
-    message.classList.remove('remove')
-    choicesDisplay.classList.add('remove')
-    resultDisplay.innerHTML = ' ';
+const game = (inputPlayer) => {;
+    const inputChoice = choices[Math.floor(Math.random() * choices.length)];
 
     
-}
+    setTimeout(() => {
+        displayChoices(inputPlayer, inputChoice);
+        playRound(inputPlayer, inputChoice, scorePlayer, scoreComputer,displayResult)
+      }, 200);
 
-const incrementScore = (scoreSpan) => { 
-    if (scoreSpan.innerText < 5) {
-        scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1;
-    } else {
-        return scoreSpan.innerText;
+    function displayChoices(playerChoice, computerChoice) {
+        playerChoiceDisplay.classList.remove('hide');
+        computerChoiceDisplay.classList.remove('hide');
+    
+        playerChoiceDisplay.firstChild.className = `choice-${playerChoice}`;
+        computerChoiceDisplay.firstChild.className = `choice-${computerChoice}`;
+    }
+
+    function displayResult(winner) {
+        sections[2].classList.toggle('hide');
+        sections[3].classList.toggle('hide');
+
+        if(winner == 'player-score') {
+            winnerText.textContent = 'win';
+            winnerText.id = 'loose';
+        } else if(winner == 'bot-score') {
+            winnerText.textContent = 'loose';
+            winnerText.id = 'loose';
+        }
     }
 }
 
-const playRound = (playerSelection, computerSelection) => {
-    switch (playerSelection + computerSelection) {
-        case 'ScissorsPaper':
-        case 'RockScissors': 
-        case 'PaperRock':
-            resultDisplay.innerHTML = `You Win! ${playerSelection} beats ${computerSelection}`;
-            incrementScore(yourScoreSpan)
+const playRound = (playerSelection, computerSelection, scorePlayer, scoreComputer, resultFunction) => {
+    switch (playerSelection + '-' + computerSelection) {
+        case 'scissors-paper':
+        case 'rockc-scissors': 
+        case 'paper-rock':
+            console.log(`You Win! ${playerSelection} beats ${computerSelection}`)
+            incrementScore(scorePlayer);
             break;
-        case 'PaperScissors':
-        case 'ScissorsRock': 
-        case 'RockPaper':
-            resultDisplay.innerHTML = `You Lose! ${computerSelection} beats ${playerSelection}`;
-            incrementScore(computerScoreSpan)
+        case 'paper-scissors':
+        case 'scissors-rock': 
+        case 'rock-paper':
+            console.log(`You Lose! ${computerSelection} beats ${playerSelection}`)
+            incrementScore(scoreComputer);
             break;
-        case 'ScissorsScissors':
-        case 'RockRock':
-        case 'PaperPaper':
-            resultDisplay.innerHTML = "ITS A DRAW!";
+        case 'scissors-scissors':
+        case 'rock-rock':
+        case 'paper-paper':
+            console.log('"ITS A DRAW!"')
             break;
     }
-  }
+
+    function incrementScore(scoreWinner) {
+        let value = parseInt(scoreWinner.textContent, 10);
+        value++;
+        scoreWinner.textContent = value;
+        if(value >= points) {
+            return resultFunction(scoreWinner.id);
+            // return setTimeout(() => {
+            //     resultFunction(scoreWinner.id)
+            //   }, 1000);
+        }
+        return;   
+    }
+}
+
+playButton.addEventListener('click', () => {
+    sections[0].classList.toggle('hide')
+    sections[1].classList.toggle('hide')
+    sections[2].classList.toggle('hide')
+})
+
+restartButton.addEventListener('click', () => {
+    scorePlayer.textContent = 0;
+    scoreComputer.textContent = 0;
+    playerChoiceDisplay.classList.add('hide');
+    computerChoiceDisplay.classList.add('hide');
+    playerChoiceDisplay.firstChild.className = 'null';
+    computerChoiceDisplay.firstChild.className = 'null';
+    sections[2].classList.toggle('hide');
+    sections[3].classList.toggle('hide');
+})
 
